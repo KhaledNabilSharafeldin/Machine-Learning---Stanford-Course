@@ -82,8 +82,8 @@ X = [ones(m, 1) X];
 fprintf('Running gradient descent ...\n');
 
 % Choose some alpha value
-alpha = 0.01;
-num_iters = 400;
+alpha = .01;
+num_iters = 1000;
 
 % Init Theta and Run Gradient Descent 
 theta = zeros(3, 1);
@@ -106,7 +106,7 @@ fprintf('\n');
 % not need to be normalized.
 price = 0; % You should change this
 
-
+price = [1, 1650, 3]*theta;
 % ============================================================
 
 fprintf(['Predicted price of a 1650 sq-ft, 3 br house ' ...
@@ -128,7 +128,6 @@ fprintf('Solving with normal equations...\n');
 %               After doing so, you should complete this code 
 %               to predict the price of a 1650 sq-ft, 3 br house.
 %
-
 %% Load Data
 data = csvread('ex1data2.txt');
 X = data(:, 1:2);
@@ -151,7 +150,7 @@ fprintf('\n');
 % ====================== YOUR CODE HERE ======================
 price = 0; % You should change this
 
-
+price = [1, 1650, 3]*theta;
 % ============================================================
 
 fprintf(['Predicted price of a 1650 sq-ft, 3 br house ' ...
