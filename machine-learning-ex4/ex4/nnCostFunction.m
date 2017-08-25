@@ -1,3 +1,4 @@
+
 function [J grad] = nnCostFunction(nn_params, ...
                                    input_layer_size, ...
                                    hidden_layer_size, ...
@@ -61,25 +62,51 @@ Theta2_grad = zeros(size(Theta2));
 %               the regularization separately and then add them to Theta1_grad
 %               and Theta2_grad from Part 2.
 %
+Theta1trans = Theta1';
+
+Theta2trans = Theta2';
+%%FWD prop
+X = [ones(m,1), X];
+z2 = X*Theta1trans;
+a2 = [ones(m,1) sigmoid(z2)];
+z3 = a2*Theta2trans;
+a3 = sigmoid(z3);
+h = a3';
+
+%%convert output
+% Y = [ismembc(y,1) ismembc(y,2) ismembc(y,3)...
+%     ismembc(y,4) ismembc(y,5) ismembc(y,6)...
+%     ismembc(y,7) ismembc(y,8) ismembc(y,9)...    Faster
+%     ismembc(y,10)];
+Y = zeros(num_labels, m);
+for i = 1:num_labels
+    Y(i,:) = ismembc(y,i);
+end 
 
 
+%%Cost
+J = sum(sum((log(h).*(-Y)-log(1-h).*(1-Y))./m));
+
+%%Reg Cost
+Theta1sq = Theta1(:,2:end).^2;
+Theta2sq = Theta2(:,2:end).^2;
+
+J = J + (sum(Theta1sq(:)) + sum(Theta2sq(:))).*(lambda/(2*m));
+
+%%Back Prop
+d3 = h - Y;
+d2 = (Theta2trans(2:end,:)*d3).*sigmoidGradient(z2)';
+D1 = d2*X;
+D2 = d3*a2;
+
+Theta1(:,1)=0;
+Theta2(:,1)=0;
+
+Theta1_grad = (1/m)*D1+(lambda/m)*Theta1;
+Theta2_grad = (1/m)*D2+(lambda/m)*Theta2;
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+grad = [Theta1_grad(:); Theta2_grad(:)];
 % -------------------------------------------------------------
 
 % =========================================================================
