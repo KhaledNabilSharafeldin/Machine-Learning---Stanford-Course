@@ -17,14 +17,15 @@ grad = zeros(size(theta));
 %               regression for a particular choice of theta.
 %
 %               You should set J to the cost and grad to the gradient.
-%
+h = X*theta;
+c = h - y;
+thetaWO = theta(2:end);
+J = (c'*c + lambda*(thetaWO'*thetaWO))/(2*m);
 
+thetaWO = theta;
+thetaWO(1) = 0;
 
-
-
-
-
-
+grad = (X'*c + lambda*thetaWO)/m;
 
 
 
